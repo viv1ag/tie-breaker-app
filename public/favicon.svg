@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+  <!-- Background Rounded Tile -->
+  <rect width="64" height="64" rx="16" fill="url(#bgGrad)" stroke="#334155" stroke-width="2" />
+  
+  <!-- Scale Icon (Same as App Logo) -->
+  <g transform="translate(8, 8) scale(2)" stroke="url(#amberGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Central Pivot Pillar -->
+    <line x1="12" y1="3" x2="12" y2="21" />
+    <line x1="8" y1="21" x2="16" y2="21" />
+    <!-- Tipped Crossbeam (Resolving the tie!) -->
+    <path d="M4 8l8-2 8 2" />
+    <!-- Left Scale Pan -->
+    <path d="M4 8v3a3 3 0 0 0 6 0V8" />
+    <!-- Right Scale Pan (Lower/Decisive) -->
+    <path d="M14 10v3a3 3 0 0 0 6 0v-3" />
+  </g>
+
+  <!-- Decisive Checkmark Badge -->
+  <circle cx="50" cy="50" r="9" fill="#f59e0b" stroke="#ffffff" stroke-width="2" />
+  <path d="M46 50l2.5 2.5 5.5-5.5" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
