@@ -2,6 +2,8 @@
 
 > **Cut through analysis paralysis.** Transform tough personal, technical, and strategic dilemmas into clear, weighted trade-off evaluations and decisive verdicts.
 
+🌐 **Live Demo**: [https://tiebrkr.ai.studio/](https://tiebrkr.ai.studio/)
+
 ---
 
 ## 🌟 Overview

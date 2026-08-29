@@ -1,11 +1,12 @@
 import React from 'react';
-import { History, PlusCircle, BookOpen, Layers, CheckCircle2 } from 'lucide-react';
+import { History, PlusCircle, BookOpen, Lightbulb, CheckCircle2 } from 'lucide-react';
 
 interface HeaderProps {
   hasActiveDecision: boolean;
   onNewDecision: () => void;
   onOpenHistory: () => void;
   onOpenMethodology: () => void;
+  onOpenInspiration: () => void;
   savedCount: number;
 }
 
@@ -14,6 +15,7 @@ export const Header: React.FC<HeaderProps> = ({
   onNewDecision,
   onOpenHistory,
   onOpenMethodology,
+  onOpenInspiration,
   savedCount,
 }) => {
   return (
@@ -69,9 +71,19 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
+            id="header-inspiration-btn"
+            onClick={onOpenInspiration}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-100 hover:text-slate-900 transition-all active:scale-95 cursor-pointer"
+          >
+            <Lightbulb className="h-3.5 w-3.5 text-amber-500" />
+            <span>Examples</span>
+          </button>
+
+          <button
+            type="button"
             id="header-methodology-btn"
             onClick={onOpenMethodology}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-100 hover:text-slate-900 transition-all active:scale-95"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-100 hover:text-slate-900 transition-all active:scale-95 cursor-pointer"
           >
             <BookOpen className="h-3.5 w-3.5 text-slate-500" />
             <span>Methodology</span>

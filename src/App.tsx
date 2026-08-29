@@ -10,7 +10,8 @@ import { AnalysisView } from './components/AnalysisView';
 import { SavedDecisionsDrawer } from './components/SavedDecisionsDrawer';
 import { ExportModal } from './components/ExportModal';
 import { MethodologyModal } from './components/MethodologyModal';
-import { DecisionAnalysis } from './types';
+import { InspirationModal } from './components/InspirationModal';
+import { DecisionAnalysis, PresetScenario } from './types';
 import { getSavedDecisions, saveDecision, deleteSavedDecision } from './lib/storage';
 import { AlertCircle, Sparkles, Heart } from 'lucide-react';
 import { AnalysisLoadingOverlay } from './components/AnalysisLoadingOverlay';
@@ -29,12 +30,18 @@ export default function App() {
     priorities: string[];
   } | null>(null);
   const [activeAnalysisTitle, setActiveAnalysisTitle] = useState<string>('');
+  const [activeAnalysisMeta, setActiveAnalysisMeta] = useState<{
+    optionsCount: number;
+    prioritiesCount: number;
+    contextLength: number;
+  }>({ optionsCount: 2, prioritiesCount: 3, contextLength: 0 });
   const [isRerunningActive, setIsRerunningActive] = useState<boolean>(false);
 
   // Modals / Drawers
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [isMethodologyOpen, setIsMethodologyOpen] = useState(false);
+  const [isInspirationOpen, setIsInspirationOpen] = useState(false);
 
   // Load saved decisions on mount
   useEffect(() => {
@@ -51,6 +58,11 @@ export default function App() {
     setIsLoading(true);
     setError(null);
     setActiveAnalysisTitle(formData.title);
+    setActiveAnalysisMeta({
+      optionsCount: formData.options.length,
+      prioritiesCount: formData.priorities.length,
+      contextLength: formData.context.length,
+    });
 
     try {
       const response = await fetch('/api/analyze-decision', {
@@ -132,6 +144,21 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleSelectPreset = (preset: PresetScenario) => {
+    setFormInitialData({
+      title: preset.title,
+      context: preset.context || '',
+      options: preset.options.map((opt, idx) => ({
+        id: `opt-${idx + 1}`,
+        title: opt.title,
+        description: opt.description,
+      })),
+      priorities: preset.priorities,
+    });
+    setCurrentDecision(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-slate-100/70 flex flex-col font-sans selection:bg-slate-900 selection:text-white">
       <Header
@@ -139,6 +166,7 @@ export default function App() {
         onNewDecision={handleNewDecision}
         onOpenHistory={() => setIsHistoryOpen(true)}
         onOpenMethodology={() => setIsMethodologyOpen(true)}
+        onOpenInspiration={() => setIsInspirationOpen(true)}
         savedCount={savedDecisions.length}
       />
 
@@ -165,6 +193,7 @@ export default function App() {
             onAnalyze={handleAnalyzeDecision}
             isLoading={isLoading}
             initialData={formInitialData}
+            onOpenInspiration={() => setIsInspirationOpen(true)}
           />
         ) : (
           <AnalysisView
@@ -182,6 +211,9 @@ export default function App() {
         isOpen={isLoading}
         decisionTitle={activeAnalysisTitle}
         isRerun={isRerunningActive}
+        optionsCount={activeAnalysisMeta.optionsCount}
+        prioritiesCount={activeAnalysisMeta.prioritiesCount}
+        contextLength={activeAnalysisMeta.contextLength}
       />
 
       <footer className="border-t border-slate-200 bg-white py-6 mt-12 text-center text-xs text-slate-500">
@@ -218,6 +250,13 @@ export default function App() {
       <MethodologyModal
         isOpen={isMethodologyOpen}
         onClose={() => setIsMethodologyOpen(false)}
+      />
+
+      {/* Inspiration & Example Dilemmas Modal */}
+      <InspirationModal
+        isOpen={isInspirationOpen}
+        onClose={() => setIsInspirationOpen(false)}
+        onSelectPreset={handleSelectPreset}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, ArrowRight, Wand2, RefreshCw, Layers, Check, Sparkles, SlidersHorizontal, Scale } from 'lucide-react';
+import { Plus, Trash2, ArrowRight, Wand2, RefreshCw, Check, Sparkles, SlidersHorizontal, Scale, Lightbulb } from 'lucide-react';
 import { PRESET_SCENARIOS } from '../data/presets';
 import { PresetScenario } from '../types';
 
@@ -17,6 +17,7 @@ interface DecisionFormProps {
     options: { id: string; title: string; description: string }[];
     priorities: string[];
   } | null;
+  onOpenInspiration?: () => void;
 }
 
 const COMMON_PRIORITY_TAGS = [
@@ -46,6 +47,7 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
   onAnalyze,
   isLoading,
   initialData,
+  onOpenInspiration,
 }) => {
   const [title, setTitle] = useState(initialData?.title || '');
   const [context, setContext] = useState(initialData?.context || '');
@@ -216,28 +218,7 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
         </p>
       </div>
 
-      {/* Preset Scenarios */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm space-y-3">
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-700 uppercase tracking-wider">
-          <Layers className="h-3.5 w-3.5 text-slate-500" />
-          <span>Quick Load: Example Dilemmas</span>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {PRESET_SCENARIOS.map((preset) => (
-            <button
-              key={preset.id}
-              type="button"
-              onClick={() => handleApplyPreset(preset)}
-              className="group flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-700 hover:border-slate-300 hover:bg-white hover:text-slate-950 transition-all text-left shadow-2xs active:scale-95"
-            >
-              <span className="font-medium text-slate-800 group-hover:text-slate-950">{preset.title}</span>
-              <span className="text-[10px] font-semibold text-slate-500 bg-slate-200/80 px-1.5 py-0.5 rounded border border-slate-300/60">{preset.tag}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Quick AI Auto-Draft - Prominent Standout Highlight */}
+      {/* Quick AI Auto-Draft - Prominent Standout with Integrated Quick-Fill Examples */}
       <div className="relative rounded-2xl border border-amber-300/90 bg-gradient-to-br from-amber-50/90 via-orange-50/40 to-amber-50/60 p-5 sm:p-6 shadow-xs ring-1 ring-amber-400/20 space-y-3.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -248,7 +229,7 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
               <h3 className="text-sm font-bold text-slate-950 flex items-center gap-1.5">
                 <span>Fast-Track Auto-Draft</span>
                 <span className="rounded bg-amber-200/90 border border-amber-300 px-1.5 py-0.2 text-[10px] font-extrabold text-amber-950 uppercase tracking-wide">
-                  One-Click Setup
+                  AI Formulator
                 </span>
               </h3>
               <p className="text-xs text-slate-600 font-normal">
@@ -290,6 +271,23 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
               </>
             )}
           </button>
+        </div>
+
+        {/* Inspiration Link */}
+        <div className="pt-2 border-t border-amber-200/60 flex items-center justify-between text-xs">
+          <span className="text-[11px] text-slate-500 font-normal">
+            Type anything above or explore pre-structured scenarios
+          </span>
+          {onOpenInspiration && (
+            <button
+              type="button"
+              onClick={onOpenInspiration}
+              className="inline-flex items-center gap-1.5 font-semibold text-amber-900 hover:text-amber-950 bg-amber-200/70 hover:bg-amber-200 px-2.5 py-1 rounded-lg border border-amber-300/80 transition-all text-xs active:scale-95 cursor-pointer"
+            >
+              <Lightbulb className="h-3.5 w-3.5 text-amber-800" />
+              <span>See Example Dilemmas</span>
+            </button>
+          )}
         </div>
 
         {suggestError && (
@@ -460,8 +458,20 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
           </div>
         </div>
 
-        {/* Submit Action */}
-        <div className="pt-2">
+        {/* Submit Action & Estimated Duration Notice */}
+        <div className="pt-2 space-y-2.5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600">
+            <div className="flex items-center gap-1.5 font-semibold text-slate-800">
+              <Scale className="h-4 w-4 text-amber-500 shrink-0" />
+              <span>Multi-Factor Deep Analysis</span>
+            </div>
+            <div className="flex items-center gap-1 text-[11px] text-slate-500 font-medium">
+              <span>⏱️ Estimated Duration:</span>
+              <strong className="text-slate-900 font-bold">2 to 8 minutes</strong>
+              <span>(based on complexity)</span>
+            </div>
+          </div>
+
           <button
             type="submit"
             disabled={isLoading || !title.trim() || options.length < 2}
