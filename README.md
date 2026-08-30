@@ -11,36 +11,38 @@
 **The Tiebreaker** is a modern decision intelligence web application. When facing tough forks in the road—such as job offers, tech stack selections, major financial investments, or strategic pivots—people often get stuck in analysis paralysis.
 
 The Tiebreaker takes your context, candidate options, and core priorities, and conducts a deep multi-faceted evaluation using Google Gemini models:
-- Generates a **Decisive Verdict & Tiebreaker Recommendation** with confidence scores.
-- Builds an in-depth **Weighted Multi-Factor Comparison Matrix**.
-- Breaks down **Pros & Cons with Impact Ratings**.
+- Generates an unambiguous **Decisive Verdict & Tiebreaker Recommendation** with confidence scores.
+- Builds an in-depth **Weighted Multi-Factor Comparison Matrix (MCDA)** with live interactive weight sliders.
+- Breaks down **Pros & Cons with Impact Ratings** and caveats.
 - Constructs a full **SWOT Matrix** (Strengths, Weaknesses, Opportunities, Threats) for each candidate.
-- Performs **Worst-Case Stress Testing & Contingency Planning**.
-- Allows **Interactive Sensitivity Tuning** with live sliders to see how shifting priorities change the outcome.
+- Performs **Worst-Case Stress Testing & Devil's Advocate Simulation**.
+- Allows **Interactive Sensitivity Tuning** with live sliders to see how shifting priorities change the outcome in real time (<1ms recalculation).
 
 ---
 
 ## ✨ Key Features
 
-### 🚀 1. Fast-Track Auto-Draft
-- **One-Sentence Dilemma Formulation**: Type a natural language question (e.g. *"Should I accept a high-paying enterprise role or join an early-stage AI startup?"*) and let AI automatically generate balanced candidate options, descriptive backgrounds, and relevant criteria tags.
-- **Pre-Built Decision Templates**: Quick-start from popular dilemmas across Career, Engineering, Finance, Relocation, and Lifestyle.
+### 🚀 1. Fast-Track Auto-Draft & Dynamic Ergonomics
+- **Natural Language Dilemma Ingestion**: Type a dilemma in plain words (e.g. *"Should I join an early-stage startup or take a stable corporate job?"*) and let AI formulate candidate options, descriptive backgrounds, and relevant criteria tags.
+- **Auto-Expanding Input Box**: Starts as a space-saving single line (`42px`), dynamically expanding vertically as you type or paste without intrusive scrollbars.
+- **Keyboard Ergonomics**: Pressing <kbd>Enter</kbd> comfortably inserts new lines for notes and paragraphs; AI formulation is cleanly triggered via the dedicated action button.
+- **Top-Right Dilemma Inspiration**: Quick-start from curated dilemma templates across Career, Engineering, Finance, Relocation, and Lifestyle.
 
 ### 🎯 2. Decisive Verdict Hero
-- **Clear Winner & Confidence Index**: Unambiguous recommendation with a calculated decision confidence percentage.
+- **Clear Winner & Confidence Index**: Unambiguous recommendation with a calculated decision confidence percentage (60–95%). Zero "it depends" cop-outs.
 - **The Core "Tiebreaker Reason"**: A concise, bottom-line justification explaining why the winning option edges out the alternatives.
-- **Pivotal Factors & Immediate Action Plan**: Structured milestones and next steps to execute the chosen path.
+- **Pivotal Factors & Immediate Action Plan**: Structured milestones (*Today*, *This Week*, *Next Month*) and risk mitigation safeguards.
 
 ### 📊 3. Deep Analytical Frameworks
-- **Pros & Cons with Impact Ratings**: High, medium, and low impact trade-off indicators for every candidate option.
-- **Interactive Criteria Weighting Matrix**: Multi-attribute scoring across all dimensions (Cost, Growth, Risk, Work-Life Balance, etc.) with real-time slider re-weighting.
-- **Comparative SWOT Analysis**: Side-by-side Strengths, Weaknesses, Opportunities, and Threats.
-- **Worst-Case Stress Testing**: Evaluates what happens if things go wrong, probability/severity ratings, and mitigation plans.
+- **Pros & Cons with Impact Ratings**: Critical, high, medium, and low impact trade-off indicators for every candidate option.
+- **Interactive MCDA Weighting Matrix**: Multi-attribute scoring across all dimensions with real-time slider re-weighting.
+- **Comparative SWOT Analysis**: Side-by-side Strengths, Weaknesses, Opportunities, and Threats in color-coded quadrants.
+- **Devil's Advocate Stress Testing**: Evaluates what happens in custom "What-If" crisis scenarios with contingency ratings.
 
-### 🔄 4. Live Progress Overlay & Re-Run Engine
-- **Full-Screen Analysis Splash**: Visual milestone indicator during generation (*Trade-offs evaluation → Multi-Factor calibration → SWOT & Stress-testing → Recommendation synthesis*).
-- **Saved Dilemmas Vault**: Local persistence to review past decisions.
-- **Instant Re-run & Edit**: Re-run existing dilemmas with updated models or tweak fields without re-typing from scratch.
+### 🔄 4. Light-Themed Progress Overlay & Saved Vault
+- **Refined Loading Splash**: Soft, high-contrast modal backdrop (`bg-slate-900/40`) with live step-by-step progress tracking and second-by-second elapsed timer.
+- **Saved Dilemmas Vault**: Offline-ready local storage to review and restore past decisions.
+- **Instant Re-run & Edit**: Re-run existing dilemmas or tweak candidate options and weights on the fly.
 
 ### 📤 5. Multi-Format Export & Sharing
 - Export comprehensive decision briefs to **Markdown**, **JSON**, **Formatted HTML**, or **Print / PDF**.
@@ -58,7 +60,7 @@ The Tiebreaker takes your context, candidate options, and core priorities, and c
   - [canvas-confetti](https://www.npmjs.com/package/canvas-confetti)
 - **Backend & AI**:
   - [Express.js](https://expressjs.com/) (Node.js full-stack proxy server)
-  - [@google/genai](https://www.npmjs.com/package/@google/genai) (Google Gemini 2.5 Flash)
+  - [@google/genai](https://www.npmjs.com/package/@google/genai) (Google Gemini 3.7 Flash with multi-model fallback pipeline)
   - [Vite](https://vitejs.dev/) & [esbuild](https://esbuild.github.io/)
 
 ---
@@ -101,6 +103,29 @@ The Tiebreaker takes your context, candidate options, and core priorities, and c
 
 ---
 
+## 🧪 Testing & Quality Assurance
+
+The project includes an automated test suite verifying mathematical invariance, AI schema contracts, input ergonomics, and security:
+
+```bash
+# Run the complete QA test suite
+npx tsx scripts/run-all-tests.ts
+
+# Run TypeScript typechecks & linter
+npm run lint
+```
+
+For complete test specifications and coverage matrix, see **[`TEST_CASES.md`](./TEST_CASES.md)**.
+
+---
+
+## 📄 Documentation
+
+- **[`PRD.md`](./PRD.md)**: AI-First Product Requirements Document detailing the Genesis Prompt and evolutionary increments.
+- **[`TEST_CASES.md`](./TEST_CASES.md)**: Principal QA Master Test Suite & Test Strategy.
+
+---
+
 ## 📦 Build & Production
 
 To bundle the client with Vite and package the backend server with esbuild:
@@ -115,18 +140,24 @@ npm start
 ## 📂 Project Structure
 
 ```
-├── server.ts                  # Express backend & Gemini API integration
+├── PRD.md                     # AI-First Product Requirements Document
+├── TEST_CASES.md              # Master QA Test Plan & Test Suite
+├── scripts/
+│   └── run-all-tests.ts       # Automated QA test runner script
+├── server.ts                  # Express backend & Gemini API pipeline
 ├── src/
 │   ├── App.tsx                # Main Application shell & navigation state
 │   ├── main.tsx               # Client entrypoint
 │   ├── index.css              # Tailwind CSS imports & theme styling
 │   ├── types.ts               # Shared TypeScript models & decision schemas
+│   ├── data/
+│   │   └── presets.ts         # Pre-configured dilemma templates
 │   ├── lib/
 │   │   └── storage.ts         # Local storage manager for saved decisions
 │   └── components/
 │       ├── Header.tsx                 # Top navigation and history vault trigger
 │       ├── DecisionForm.tsx           # Dilemma form with Fast-Track Auto-Draft
-│       ├── AnalysisLoadingOverlay.tsx # Full splash screen with step-by-step progress
+│       ├── AnalysisLoadingOverlay.tsx # Splash modal with step-by-step progress
 │       ├── AnalysisView.tsx           # Multi-tab analysis dashboard
 │       ├── VerdictHero.tsx            # Top recommendation, score & action plan
 │       ├── ProsConsView.tsx           # Side-by-side pros, cons & caveats
@@ -135,6 +166,7 @@ npm start
 │       ├── StressTesterView.tsx       # Worst-case failure modes & mitigations
 │       ├── SavedDecisionsDrawer.tsx   # History drawer with one-click re-run
 │       ├── ExportModal.tsx            # Multi-format report exporter
+│       ├── InspirationModal.tsx       # Example dilemmas modal
 │       └── MethodologyModal.tsx       # Explanation of decision science framework
 ├── .env.example               # Environment variables specification
 ├── package.json
@@ -145,8 +177,8 @@ npm start
 
 ## 💡 How the Decision Framework Works
 
-1. **Multi-Attribute Utility Theory (MAUT)**: Every option is rated across user-defined priority dimensions and weighted according to your preferences.
-2. **Qualitative Adversarial Stress-Testing**: Options are tested against external risk factors and worst-case scenario outcomes.
+1. **Multi-Attribute Utility Theory (MAUT / MCDA)**: Every option is rated across user-defined priority dimensions and weighted according to your preferences with dynamic sensitivity adjustments.
+2. **Qualitative Adversarial Stress-Testing**: Options are tested against external risk factors and worst-case scenario outcomes via a simulated Devil's Advocate.
 3. **Decisive Tiebreaking**: When options are closely matched, the system isolates the single highest-leverage constraint (the "Tiebreaker Factor") to break deadlocks with clear conviction.
 
 ---
