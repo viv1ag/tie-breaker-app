@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Plus, Trash2, ArrowRight, Wand2, RefreshCw, Check, Sparkles, SlidersHorizontal, Scale, Lightbulb } from 'lucide-react';
 import { PRESET_SCENARIOS } from '../data/presets';
 import { PresetScenario } from '../types';
@@ -86,6 +86,15 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
   const [magicDilemma, setMagicDilemma] = useState('');
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [suggestError, setSuggestError] = useState<string | null>(null);
+  const magicTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize textarea based on content
+  useEffect(() => {
+    if (magicTextareaRef.current) {
+      magicTextareaRef.current.style.height = 'auto';
+      magicTextareaRef.current.style.height = `${Math.max(42, magicTextareaRef.current.scrollHeight)}px`;
+    }
+  }, [magicDilemma]);
 
   // Animated loading step indicator
   const [loadingStepIdx, setLoadingStepIdx] = useState(0);
@@ -218,9 +227,9 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
         </p>
       </div>
 
-      {/* Quick AI Auto-Draft - Prominent Standout with Integrated Quick-Fill Examples */}
+      {/* Quick AI Auto-Draft - Prominent Standout with Top-Right Example Dilemmas Button */}
       <div className="relative rounded-2xl border border-amber-300/90 bg-gradient-to-br from-amber-50/90 via-orange-50/40 to-amber-50/60 p-5 sm:p-6 shadow-xs ring-1 ring-amber-400/20 space-y-3.5">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500 text-slate-950 shadow-2xs font-bold shrink-0">
               <Wand2 className="h-4 w-4 text-slate-950" />
@@ -233,61 +242,55 @@ export const DecisionForm: React.FC<DecisionFormProps> = ({
                 </span>
               </h3>
               <p className="text-xs text-slate-600 font-normal">
-                Describe what you&apos;re debating in natural words — we&apos;ll formulate the options and criteria.
+                Describe your dilemma in plain words — we&apos;ll formulate options &amp; criteria.
               </p>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col sm:flex-row gap-2.5 pt-0.5">
-          <input
-            type="text"
-            value={magicDilemma}
-            onChange={(e) => setMagicDilemma(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleMagicDraft();
-              }
-            }}
-            placeholder="e.g., Should I buy a fuel-efficient hybrid or keep maintaining my paid-off sedan?"
-            className="flex-1 rounded-xl border border-amber-300/80 bg-white px-4 py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all shadow-2xs"
-          />
-          <button
-            type="button"
-            onClick={handleMagicDraft}
-            disabled={isSuggesting || !magicDilemma.trim()}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-50 px-5 py-2.5 text-xs sm:text-sm font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer shadow-2xs"
-          >
-            {isSuggesting ? (
-              <>
-                <RefreshCw className="h-4 w-4 animate-spin text-amber-400" />
-                <span>Formulating...</span>
-              </>
-            ) : (
-              <>
-                <Sparkles className="h-4 w-4 text-amber-400" />
-                <span>Auto-Draft Form</span>
-              </>
-            )}
-          </button>
-        </div>
-
-        {/* Inspiration Link */}
-        <div className="pt-2 border-t border-amber-200/60 flex items-center justify-between text-xs">
-          <span className="text-[11px] text-slate-500 font-normal">
-            Type anything above or explore pre-structured scenarios
-          </span>
           {onOpenInspiration && (
             <button
               type="button"
+              id="top-right-inspiration-btn"
               onClick={onOpenInspiration}
-              className="inline-flex items-center gap-1.5 font-semibold text-amber-900 hover:text-amber-950 bg-amber-200/70 hover:bg-amber-200 px-2.5 py-1 rounded-lg border border-amber-300/80 transition-all text-xs active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1.5 font-semibold text-amber-900 hover:text-amber-950 bg-amber-200/80 hover:bg-amber-300/90 px-3 py-1.5 rounded-xl border border-amber-300 transition-all text-xs active:scale-95 cursor-pointer shadow-2xs self-start sm:self-auto shrink-0"
             >
               <Lightbulb className="h-3.5 w-3.5 text-amber-800" />
               <span>See Example Dilemmas</span>
             </button>
           )}
+        </div>
+
+        <div className="space-y-2.5 pt-0.5">
+          <textarea
+            ref={magicTextareaRef}
+            id="magic-dilemma-textarea"
+            rows={1}
+            value={magicDilemma}
+            onChange={(e) => setMagicDilemma(e.target.value)}
+            placeholder="e.g., Should I join an early-stage startup or take a stable corporate job?"
+            className="w-full resize-none min-h-[42px] rounded-xl border border-amber-300/90 bg-white px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-400/30 transition-all shadow-2xs leading-relaxed overflow-hidden"
+          />
+          <div className="flex items-center justify-end">
+            <button
+              type="button"
+              id="magic-draft-submit-btn"
+              onClick={handleMagicDraft}
+              disabled={isSuggesting || !magicDilemma.trim()}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-50 px-5 py-2.5 text-xs sm:text-sm font-bold text-white transition-all shrink-0 active:scale-95 cursor-pointer shadow-2xs w-full sm:w-auto"
+            >
+              {isSuggesting ? (
+                <>
+                  <RefreshCw className="h-4 w-4 animate-spin text-amber-400" />
+                  <span>Formulating...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4 text-amber-400" />
+                  <span>Auto-Draft Form</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {suggestError && (

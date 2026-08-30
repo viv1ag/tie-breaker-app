@@ -114,53 +114,53 @@ export const AnalysisLoadingOverlay: React.FC<AnalysisLoadingOverlayProps> = ({
   return (
     <div
       id="analysis-loading-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-xs p-4 animate-in fade-in duration-200 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-200 overflow-y-auto"
     >
-      <div className="w-full max-w-lg rounded-2xl border border-slate-700/80 bg-slate-900 text-white shadow-2xl p-6 sm:p-8 space-y-5 my-auto">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-200/90 bg-white text-slate-900 shadow-2xl p-6 sm:p-8 space-y-5 my-auto ring-1 ring-slate-900/5">
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/20 border border-amber-400/40 text-amber-400 mb-1 shadow-inner">
-            <RefreshCw className="h-6 w-6 animate-spin text-amber-400" />
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 mb-1 shadow-2xs">
+            <RefreshCw className="h-6 w-6 animate-spin text-amber-600" />
           </div>
-          <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
             {isRerun ? 'Re-running Decision Analysis' : 'Synthesizing Decision Analysis'}
           </h2>
           {decisionTitle ? (
-            <p className="text-xs sm:text-sm text-slate-300 font-medium line-clamp-2 px-3 bg-slate-800/80 py-1.5 rounded-lg border border-slate-700/60">
+            <p className="text-xs sm:text-sm text-slate-700 font-medium line-clamp-2 px-3 bg-slate-50 py-1.5 rounded-lg border border-slate-200/80">
               &ldquo;{decisionTitle}&rdquo;
             </p>
           ) : (
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               Running deep trade-off evaluation and deadlock resolution...
             </p>
           )}
         </div>
 
         {/* Time & Complexity Dashboard Header */}
-        <div className="grid grid-cols-2 gap-2.5 rounded-xl bg-slate-800/60 border border-slate-700/70 p-3 text-xs">
+        <div className="grid grid-cols-2 gap-2.5 rounded-xl bg-slate-50 border border-slate-200/80 p-3 text-xs">
           <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-semibold uppercase tracking-wider">
-              <Clock className="h-3.5 w-3.5 text-amber-400" />
+            <div className="flex items-center gap-1.5 text-slate-500 text-[11px] font-semibold uppercase tracking-wider">
+              <Clock className="h-3.5 w-3.5 text-amber-600" />
               <span>Time Elapsed</span>
             </div>
             <div className="flex items-baseline gap-1.5">
-              <span className="font-mono text-lg font-extrabold text-amber-300 tracking-wider">
+              <span className="font-mono text-lg font-extrabold text-slate-900 tracking-wider">
                 {formatTimer(elapsedSeconds)}
               </span>
-              <span className="text-[10px] text-slate-400 font-normal animate-pulse">active</span>
+              <span className="text-[10px] text-amber-700 bg-amber-100/80 px-1.5 py-0.5 rounded font-medium animate-pulse">active</span>
             </div>
           </div>
 
-          <div className="space-y-1 border-l border-slate-700/60 pl-3">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[11px] font-semibold uppercase tracking-wider">
+          <div className="space-y-1 border-l border-slate-200 pl-3">
+            <div className="flex items-center gap-1.5 text-slate-500 text-[11px] font-semibold uppercase tracking-wider">
               <Timer className="h-3.5 w-3.5 text-slate-400" />
               <span>Est. Duration</span>
             </div>
             <div className="flex flex-col">
-              <span className="font-semibold text-slate-200 text-xs">
+              <span className="font-semibold text-slate-800 text-xs">
                 {complexity.estRange}
               </span>
-              <span className="text-[10px] text-slate-400">
+              <span className="text-[10px] text-slate-500">
                 (2 to 8 mins max)
               </span>
             </div>
@@ -179,19 +179,19 @@ export const AnalysisLoadingOverlay: React.FC<AnalysisLoadingOverlayProps> = ({
                 key={idx}
                 className={`flex items-start gap-3 rounded-xl p-3 border transition-all duration-300 ${
                   isCurrent
-                    ? 'border-amber-400/50 bg-amber-500/10 text-white shadow-xs scale-[1.01]'
+                    ? 'border-amber-400/80 bg-amber-50/70 text-slate-900 shadow-2xs scale-[1.01]'
                     : isCompleted
-                    ? 'border-emerald-500/30 bg-emerald-500/5 text-slate-300'
-                    : 'border-slate-800 bg-slate-800/30 text-slate-500 opacity-60'
+                    ? 'border-emerald-200 bg-emerald-50/50 text-slate-800'
+                    : 'border-slate-100 bg-slate-50/40 text-slate-400 opacity-70'
                 }`}
               >
                 <div className="mt-0.5 shrink-0">
                   {isCompleted ? (
-                    <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                   ) : isCurrent ? (
-                    <StepIcon className="h-4 w-4 text-amber-400 animate-pulse" />
+                    <StepIcon className="h-4 w-4 text-amber-600 animate-pulse" />
                   ) : (
-                    <div className="h-4 w-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px] text-slate-500">
+                    <div className="h-4 w-4 rounded-full border border-slate-300 flex items-center justify-center text-[10px] text-slate-400 font-medium">
                       {idx + 1}
                     </div>
                   )}
@@ -201,21 +201,21 @@ export const AnalysisLoadingOverlay: React.FC<AnalysisLoadingOverlayProps> = ({
                     <p
                       className={`text-xs font-bold ${
                         isCurrent
-                          ? 'text-amber-300'
+                          ? 'text-amber-950'
                           : isCompleted
-                          ? 'text-slate-200'
-                          : 'text-slate-400'
+                          ? 'text-slate-800'
+                          : 'text-slate-500'
                       }`}
                     >
                       {step.title}
                     </p>
                     {isCurrent && (
-                      <span className="text-[10px] font-semibold text-amber-400 uppercase tracking-wider animate-pulse">
+                      <span className="text-[10px] font-semibold text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded uppercase tracking-wider animate-pulse">
                         In Progress
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                  <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
@@ -225,9 +225,9 @@ export const AnalysisLoadingOverlay: React.FC<AnalysisLoadingOverlayProps> = ({
         </div>
 
         {/* Dynamic Context Notice */}
-        <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3 text-center space-y-1">
-          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-300 font-medium">
-            <Hourglass className="h-3.5 w-3.5 text-amber-400 animate-spin" />
+        <div className="rounded-xl border border-slate-200/90 bg-slate-50/80 p-3 text-center space-y-1">
+          <div className="flex items-center justify-center gap-1.5 text-xs text-slate-700 font-medium">
+            <Hourglass className="h-3.5 w-3.5 text-amber-600 animate-spin" />
             <span>
               {elapsedSeconds < 25
                 ? 'Deconstructing dilemma parameters and evaluating options...'
@@ -238,8 +238,8 @@ export const AnalysisLoadingOverlay: React.FC<AnalysisLoadingOverlayProps> = ({
                 : 'Finalizing decisive tiebreaker verdict and action plan...'}
             </span>
           </div>
-          <p className="text-[11px] text-slate-400">
-            Analysis duration varies between <strong className="text-slate-300">2 to 8 minutes</strong> based on dilemma complexity, candidate options, and multi-factor depth.
+          <p className="text-[11px] text-slate-500">
+            Analysis duration varies between <strong className="text-slate-700">2 to 8 minutes</strong> based on dilemma complexity, candidate options, and multi-factor depth.
           </p>
         </div>
       </div>
